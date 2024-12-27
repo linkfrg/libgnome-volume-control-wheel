@@ -1,14 +1,12 @@
 project('gvc', 'c',
-  meson_version: '>= 0.42.0',
+  meson_version: '>= 0.46.0',
   default_options: ['static=true']
 )
 
 assert(meson.is_subproject(), 'This project is only intended to be used as a subproject!')
 
 gnome = import('gnome')
-
-pkglibdir = get_option('pkglibdir')
-pkgdatadir = get_option('pkgdatadir')
+py = import('python').find_installation(pure: false)
 
 cdata = configuration_data()
 cdata.set_quoted('GETTEXT_PACKAGE', get_option('package_name'))
@@ -69,7 +67,6 @@ enable_static = get_option('static')
 enable_introspection = get_option('introspection')
 
 assert(not enable_static or not enable_introspection, 'Currently meson requires a shared library for building girs.')
-assert(enable_static or pkglibdir != '', 'Installing shared library, but pkglibdir is unset!')
 
 c_args = ['-DG_LOG_DOMAIN="Gvc"']
 
@@ -86,15 +83,12 @@ if enable_static
 
   libgvc = libgvc_static
 else
-  if pkglibdir == ''
-    error('Installing shared library, but pkglibdir is unset!')
-  endif
 
   libgvc_shared = shared_library('gvc',
     sources: libgvc_gir_sources + libgvc_no_gir_sources + libgvc_enums,
     dependencies: libgvc_deps,
     c_args: c_args,
-    install_dir: pkglibdir,
+    install_dir: py.get_install_dir() / get_option('package_name'),
     install: true
   )
 
@@ -102,16 +96,14 @@ else
 endif
 
 if enable_introspection
-  assert(pkgdatadir != '', 'Installing introspection, but pkgdatadir is unset!')
-
   libgvc_gir = gnome.generate_gir(libgvc,
     sources: libgvc_gir_sources + libgvc_gir_headers + libgvc_enums,
     nsversion: '1.0',
     namespace: 'Gvc',
     includes: ['Gio-2.0', 'GObject-2.0'],
     extra_args: ['-DWITH_INTROSPECTION', '--quiet'],
-    install_dir_gir: pkgdatadir,
-    install_dir_typelib: pkglibdir,
+    install_dir_gir: py.get_install_dir() / get_option('package_name'),
+    install_dir_typelib: py.get_install_dir() / get_option('package_name'),
     install: true
   )
 endif

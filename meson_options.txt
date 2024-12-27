@@ -10,18 +10,6 @@ option('package_version',
   description: 'The value for the PACKAGE_VERSION define.'
 )
 
-option('pkglibdir',
-  type: 'string',
-  value: '',
-  description: 'The private directory the shared library/typelib will be installed into.'
-)
-
-option('pkgdatadir',
-  type: 'string',
-  value: '',
-  description: 'The private directory the gir file will be installed into.'
-)
-
 option('alsa',
   type: 'boolean',
   value: true,
