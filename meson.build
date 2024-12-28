@@ -1,5 +1,5 @@
 project('gvc', 'c',
-  meson_version: '>= 0.46.0',
+  meson_version: '>= 0.64.0',
   default_options: ['static=true']
 )
 
