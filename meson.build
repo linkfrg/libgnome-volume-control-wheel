@@ -6,7 +6,6 @@ project('gvc', 'c',
 assert(meson.is_subproject(), 'This project is only intended to be used as a subproject!')
 
 gnome = import('gnome')
-py = import('python').find_installation(pure: false)
 
 cdata = configuration_data()
 cdata.set_quoted('GETTEXT_PACKAGE', get_option('package_name'))
@@ -88,7 +87,7 @@ else
     sources: libgvc_gir_sources + libgvc_no_gir_sources + libgvc_enums,
     dependencies: libgvc_deps,
     c_args: c_args,
-    install_dir: py.get_install_dir() / get_option('package_name'),
+    install_dir: get_option('libdir'),
     install: true
   )
 
@@ -102,8 +101,8 @@ if enable_introspection
     namespace: 'Gvc',
     includes: ['Gio-2.0', 'GObject-2.0'],
     extra_args: ['-DWITH_INTROSPECTION', '--quiet'],
-    install_dir_gir: py.get_install_dir() / get_option('package_name'),
-    install_dir_typelib: py.get_install_dir() / get_option('package_name'),
+    install_dir_gir: get_option('datadir'),
+    install_dir_typelib: get_option('libdir'),
     install: true
   )
 endif
