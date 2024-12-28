@@ -101,7 +101,7 @@ if enable_introspection
     namespace: 'Gvc',
     includes: ['Gio-2.0', 'GObject-2.0'],
     extra_args: ['-DWITH_INTROSPECTION', '--quiet'],
-    install_dir_gir: get_option('datadir'),
+    install_dir_gir: get_option('libdir'),
     install_dir_typelib: get_option('libdir'),
     install: true
   )
