@@ -75,7 +75,7 @@ if enable_introspection
 endif
 
 if enable_static
-  libgvc_static = static_library('gvc',
+  libgvc_static = static_library('gnome-volume-control',
     sources: libgvc_gir_sources + libgvc_no_gir_sources + libgvc_enums,
     dependencies: libgvc_deps,
     c_args: c_args
@@ -84,7 +84,7 @@ if enable_static
   libgvc = libgvc_static
 else
 
-  libgvc_shared = shared_library('gvc',
+  libgvc_shared = shared_library('gnome-volume-control',
     sources: libgvc_gir_sources + libgvc_no_gir_sources + libgvc_enums,
     dependencies: libgvc_deps,
     c_args: c_args,
